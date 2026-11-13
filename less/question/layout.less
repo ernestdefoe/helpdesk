@@ -76,14 +76,16 @@ html:not(#hd) .DiscussionPage .DiscussionHero.Hero {
   box-shadow: none;
 }
 
+// 🚨 html:not(#hd): a forum's own custom LESS for coloured heroes applies
+// under every theme and would otherwise win.
 @media @tablet-up {
-  .DiscussionPage .DiscussionHero .container {
+  html:not(#hd) .DiscussionPage .DiscussionHero .container {
     padding-right: calc(15px + var(--sidebar-width) + var(--gap));
   }
 }
 
 @media (min-width: 1200px) {
-  .DiscussionPage .DiscussionHero .container {
+  html:not(#hd) .DiscussionPage .DiscussionHero .container {
     padding-left: calc(15px + @hd-tree + @hd-gap);
   }
 }

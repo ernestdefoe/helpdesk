@@ -107,9 +107,11 @@ app.initializers.add('ernestdefoe-helpdesk', () => {
   extend(DiscussionHero.prototype, 'items', function (this: DiscussionHero, items: ItemList<Mithril.Children>) {
     const discussion = this.attrs.discussion as Discussion;
 
+    // ernestdefoe/waymark draws the forum's own breadcrumb above the page:
+    // Help Desk's would say it twice.
     if (has('flarum-tags') && items.has('tags')) {
       items.remove('tags');
-      items.add('helpdeskCrumbs', crumbs(discussion), 20);
+      if (!has('ernestdefoe-waymark')) items.add('helpdeskCrumbs', crumbs(discussion), 20);
     }
 
     items.add('helpdeskFacts', facts(discussion), -10);
