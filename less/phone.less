@@ -1,0 +1,184 @@
+// ============================================================================
+// Phones (Flarum's own breakpoint). LAST, so these beat the rules above.
+// ============================================================================
+
+.HelpDeskPage-after {
+  display: none;
+}
+
+@media @phone {
+  /* ---------- Hero ---------- */
+
+  .HelpDeskHero.Hero {
+    padding: 18px 0 22px;
+    text-align: left;
+
+    .container {
+      padding: 0 16px;
+    }
+  }
+
+  html:not(#hd) .HelpDeskHero-title {
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+
+  .HelpDeskHero-text {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .HelpDeskHero-search {
+    height: 52px;
+    padding: 0 8px 0 2px;
+  }
+
+  // Under 16px iOS zooms the page in on focus.
+  input.HelpDeskHero-input {
+    font-size: 16px;
+  }
+
+  .HelpDeskHero-key {
+    display: none;
+  }
+
+  .HelpDeskHero-popular {
+    justify-content: flex-start;
+  }
+
+  /* ---------- Topics: two columns, four cards, then "All topics" ---------- */
+
+  .HelpDeskTopics {
+    margin-bottom: 18px;
+
+    .HelpDeskSection-title {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .HelpDeskTopics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+
+    > li:nth-child(n + 5) {
+      display: none;
+    }
+  }
+
+  html:not(#hd) .HelpDeskTopic {
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+  }
+
+  .HelpDeskTopic-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .HelpDeskTopic-name {
+    font-size: 14px;
+  }
+
+  .HelpDeskTopic-text {
+    display: none;
+  }
+
+  html:not(#hd) .HelpDeskTopics-all {
+    display: block;
+    text-align: center;
+    padding: 12px 0 0;
+  }
+
+  /* ---------- The list ---------- */
+
+  // Core bleeds the list to the screen edge on phones; the card keeps its gutter.
+  html:not(#hd) .IndexPage .DiscussionList {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .DiscussionListItem-content {
+    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-areas: 'stats main';
+    column-gap: 12px;
+    align-items: start;
+    padding: 14px 14px;
+  }
+
+  .DiscussionListItem-badges {
+    display: none;
+  }
+
+  html:not(#hd) .DiscussionListItem .Answers-stat,
+  .HelpDeskCount {
+    width: 48px;
+    min-height: 44px;
+    font-size: 11px;
+
+    b {
+      font-size: 15px;
+    }
+  }
+
+  html:not(#hd) .DiscussionListItem-title {
+    font-size: 15px;
+  }
+
+  .DiscussionListItem-info {
+    font-size: 12px;
+
+    .item-helpdeskWhen {
+      margin-left: 0;
+    }
+  }
+
+  /* ---------- A question ---------- */
+
+  html:not(#hd) .DiscussionPage .DiscussionHero.Hero {
+    padding-top: 16px;
+  }
+
+  html:not(#hd) .DiscussionHero-title {
+    font-size: 24px;
+  }
+
+  .HelpDeskFacts {
+    padding-bottom: 12px;
+    font-size: 13px;
+  }
+
+  // Core's sidebar is above the question on phones: the contents list has
+  // nothing to jump to yet, and the solved box and guides move below.
+  .DiscussionPage-nav {
+    .item-helpdeskContents,
+    .item-helpdeskSolved,
+    .item-helpdeskGuides {
+      display: none !important;
+    }
+  }
+
+  .HelpDeskPage-after {
+    display: block;
+    margin: 24px 0 0;
+
+    .HelpDeskGuides {
+      margin-top: 22px;
+    }
+  }
+
+  .DiscussionPage .Post-body {
+    font-size: 15px;
+
+    pre {
+      font-size: 12.5px;
+      padding: 12px 14px;
+    }
+  }
+
+  html:not(#hd) .AnswersPost--accepted {
+    padding: 12px 12px 4px;
+  }
+}

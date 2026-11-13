@@ -1,0 +1,185 @@
+// ============================================================================
+// The search hero: the bar colour carried down from the header, one big box.
+// ============================================================================
+
+.HelpDeskHero.Hero {
+  background: var(--hd-bar);
+  color: var(--hd-on-bar);
+  text-align: center;
+  padding: 34px 0 40px;
+  margin: 0;
+  border: 0;
+
+  .container {
+    max-width: 760px;
+  }
+}
+
+[data-theme^='dark'] .HelpDeskHero.Hero {
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--hd-line);
+}
+
+html:not(#hd) .HelpDeskHero-title {
+  margin: 0 0 8px;
+  font-size: 40px;
+  line-height: 1.15;
+  font-weight: 600;
+  color: var(--hd-on-bar);
+}
+
+.HelpDeskHero-text {
+  margin: 0 0 22px;
+  font-size: 16px;
+  color: var(--hd-on-bar-2);
+}
+
+.HelpDeskHero-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 720px;
+  height: 60px;
+  margin: 0 auto;
+  padding: 0 14px 0 6px;
+  background: #ffffff;
+  color: #5A6570;
+  border-radius: var(--hd-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  &:focus-within {
+    outline: 3px solid fade(#ffffff, 45%);
+    outline-offset: 2px;
+  }
+}
+
+[data-theme^='dark'] .HelpDeskHero-search {
+  background: var(--hd-card);
+  color: var(--hd-muted);
+  box-shadow: 0 0 0 1px var(--hd-line), 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.HelpDeskHero-go {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--hd-radius-sm);
+  background: none;
+  color: inherit;
+  font-size: 18px;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--hd-accent);
+  }
+}
+
+input.HelpDeskHero-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 17px;
+  color: #14202B;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &::placeholder {
+    color: #5A6570;
+    opacity: 1;
+  }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+}
+
+[data-theme^='dark'] input.HelpDeskHero-input {
+  color: var(--hd-ink);
+
+  &::placeholder {
+    color: var(--hd-muted);
+  }
+}
+
+.HelpDeskHero-key {
+  flex: none;
+  font-family: var(--hd-mono);
+  font-size: 12px;
+  line-height: 1;
+  padding: 4px 7px;
+  border: 1px solid #D2D9DE;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  box-shadow: none;
+}
+
+[data-theme^='dark'] .HelpDeskHero-key {
+  border-color: var(--hd-line);
+}
+
+.HelpDeskHero-popular {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.HelpDeskHero-popularLabel {
+  font-size: 14px;
+  color: var(--hd-on-bar-2);
+}
+
+.HelpDeskHero-chip {
+  min-height: 32px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: fade(#ffffff, 10%);
+  color: #E6EEF0;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: fade(#ffffff, 18%);
+    color: #ffffff;
+  }
+}
+
+// A topic's own page: flarum/tags' hero, in the bar colour like the home
+// page's (a tag with a colour of its own keeps it).
+html:not(#hd) .TagHero.Hero:not(.TagHero--colored) {
+  background: var(--hd-bar);
+  color: var(--hd-on-bar);
+
+  .Hero-title,
+  .Hero-subtitle,
+  .TagHero-title {
+    color: var(--hd-on-bar);
+  }
+
+  .Hero-subtitle {
+    color: var(--hd-on-bar-2);
+  }
+
+  .Hero-title .icon {
+    color: #6FD3C9;
+  }
+}
+
+html[data-theme^='dark']:not(#hd) .TagHero.Hero:not(.TagHero--colored) {
+  background: var(--header-bg);
+}

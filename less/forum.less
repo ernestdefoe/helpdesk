@@ -1,0 +1,23 @@
+// ============================================================================
+// Help Desk — a search-first support theme for Flarum 2.
+//
+// Import order is load-bearing: phone.less is LAST, because an unconditional
+// rule of equal specificity beats a media-query rule that came before it.
+// ============================================================================
+
+@import 'lib/tokens.less';
+@import 'lib/fonts.less';
+
+@import 'shell/page.less';
+@import 'shell/header.less';
+
+@import 'home/hero.less';
+@import 'home/topics.less';
+@import 'home/list.less';
+
+@import 'question/layout.less';
+@import 'question/content.less';
+@import 'question/answers.less';
+@import 'question/aside.less';
+
+@import 'phone.less';

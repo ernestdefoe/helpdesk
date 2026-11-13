@@ -1,0 +1,132 @@
+// ============================================================================
+// Posts read like documentation: a 16px body, roomy lines, dark code blocks.
+// Applies to every discussion, Q&A or not.
+// ============================================================================
+
+.DiscussionPage .Post-body {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--hd-ink);
+
+  p {
+    margin: 0 0 14px;
+  }
+
+  // 🚨 Explicit colours: a theme's or extension's link rule must not win.
+  html:not(#hd) & a {
+    color: var(--hd-accent-ink);
+    font-weight: 600;
+  }
+
+  code {
+    font-family: var(--hd-mono);
+    font-size: 0.875em;
+    background: var(--hd-soft);
+    color: var(--hd-ink);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  pre {
+    font-family: var(--hd-mono);
+    font-size: 13.5px;
+    line-height: 1.6;
+    background: var(--hd-code);
+    color: var(--hd-code-ink);
+    padding: 16px 18px;
+    margin: 0 0 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    overflow: auto;
+    max-width: 100%;
+
+    code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+  }
+
+  blockquote {
+    border-left: 3px solid var(--hd-line);
+    background: none;
+    color: var(--hd-muted);
+    padding: 2px 0 2px 14px;
+    margin: 0 0 14px;
+  }
+}
+
+[data-theme^='dark'] .DiscussionPage .Post-body pre {
+  border-color: var(--hd-line);
+}
+
+// Core's own stream (a discussion that isn't an Answers question).
+.DiscussionPage .PostStream-item + .PostStream-item {
+  border-top: 1px solid var(--hd-line);
+}
+
+// fof/best-answer's picked answer under the opening post: the same green
+// card as an Answers accepted answer.
+html:not(#hd) .DiscussionPage .CommentPost--bestAnswer,
+html:not(#hd) .DiscussionPage .BestAnswer {
+  background: var(--hd-card);
+  border: 1px solid var(--hd-line);
+  border-top: 3px solid var(--hd-ok);
+  border-radius: var(--hd-radius);
+}
+
+// Code highlighting on the dark block. The highlighter's own stylesheet is a
+// light one, which leaves dark-blue words on a dark ground.
+html:not(#hd) .DiscussionPage .Post-body pre {
+  .hljs,
+  .hljs-subst {
+    background: none;
+    color: var(--hd-code-ink);
+  }
+
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-built_in,
+  .hljs-type,
+  .hljs-meta {
+    color: #7FDAD1;
+  }
+
+  .hljs-string,
+  .hljs-attr-value,
+  .hljs-regexp,
+  .hljs-template-tag {
+    color: #F2C36B;
+  }
+
+  .hljs-number,
+  .hljs-literal,
+  .hljs-symbol,
+  .hljs-bullet {
+    color: #F7A072;
+  }
+
+  .hljs-comment,
+  .hljs-quote {
+    color: #8A9BA5;
+    font-style: italic;
+  }
+
+  .hljs-title,
+  .hljs-section,
+  .hljs-function,
+  .hljs-name {
+    color: #9CC4FF;
+  }
+
+  .hljs-attr,
+  .hljs-attribute,
+  .hljs-variable,
+  .hljs-property,
+  .hljs-params,
+  .hljs-selector-class,
+  .hljs-selector-id {
+    color: #D6C6FF;
+  }
+}

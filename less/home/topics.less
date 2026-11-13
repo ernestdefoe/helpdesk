@@ -1,0 +1,102 @@
+// ============================================================================
+// "Browse by topic": a card per top-level primary tag.
+// ============================================================================
+
+.HelpDeskTopics {
+  margin: 0 0 28px;
+
+  .HelpDeskSection-title {
+    margin-bottom: 14px;
+  }
+}
+
+.HelpDeskTopics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(~"min(240px, 100%)", 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    display: flex;
+    min-width: 0;
+  }
+}
+
+html:not(#hd) .HelpDeskTopic {
+  flex: 1;
+  display: flex;
+  gap: 14px;
+  min-width: 0;
+  padding: 18px;
+  background: var(--hd-card);
+  border: 1px solid var(--hd-line);
+  border-radius: var(--hd-radius);
+  color: var(--hd-ink);
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--hd-accent);
+    box-shadow: 0 2px 8px rgba(15, 42, 51, 0.08);
+    color: var(--hd-ink);
+  }
+}
+
+.HelpDeskTopic-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--hd-tint);
+  color: var(--hd-accent-ink);
+  font-size: 18px;
+}
+
+.HelpDeskTopic-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.HelpDeskTopic-name {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.HelpDeskTopic-text {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--hd-muted);
+  margin-bottom: 4px;
+}
+
+.HelpDeskTopic-meta {
+  font-size: 12px;
+  color: var(--hd-muted);
+}
+
+.HelpDeskTopic-answered.is-high {
+  color: var(--hd-ok);
+  font-weight: 600;
+}
+
+// "All 8 topics": on wide screens only when some are left out.
+html:not(#hd) .HelpDeskTopics-all {
+  display: none;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--hd-accent-ink);
+
+  &.is-more {
+    display: inline-block;
+  }
+}

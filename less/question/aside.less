@@ -1,0 +1,181 @@
+// ============================================================================
+// The right column: core's reply controls, then "On this question", "Did
+// this solve it?" and the knowledge base guides.
+// ============================================================================
+
+.HelpDeskSide-heading,
+.HelpDeskTree-heading {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hd-muted);
+}
+
+.DiscussionPage-nav .item-helpdeskContents {
+  margin-top: 18px;
+}
+
+.HelpDeskToc ul,
+.HelpDeskGuides ul,
+.HelpDeskTree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.HelpDeskToc-link {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 0 6px 12px;
+  border: 0;
+  border-left: 2px solid var(--hd-line);
+  background: none;
+  text-align: left;
+  font-size: 14px;
+  color: var(--hd-muted);
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--hd-accent-ink);
+    border-left-color: var(--hd-accent);
+  }
+}
+
+.HelpDeskSolved {
+  margin-top: 8px;
+  padding: 16px;
+  background: var(--hd-card);
+  border: 1px solid var(--hd-line);
+  border-radius: var(--hd-radius);
+}
+
+html:not(#hd) .HelpDeskSolved-question {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--hd-ink);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.HelpDeskSolved-buttons {
+  display: flex;
+  gap: 8px;
+
+  .Button {
+    flex: 1;
+    min-height: 40px;
+    background: var(--hd-card);
+    border: 1px solid var(--hd-line);
+    color: var(--hd-ink);
+    font-weight: 500;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--hd-accent);
+      color: var(--hd-accent-ink);
+    }
+  }
+}
+
+[data-theme^='dark'] .HelpDeskSolved-buttons .Button {
+  background: var(--hd-soft);
+}
+
+.HelpDeskSolved-thanks {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--hd-ink);
+}
+
+.HelpDeskSolved-undo {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--hd-accent-ink);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.HelpDeskSolved-count {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--hd-muted);
+}
+
+.DiscussionPage-nav .item-helpdeskGuides {
+  margin-top: 22px;
+}
+
+html:not(#hd) .HelpDeskGuides-link {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--hd-line);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--hd-ink);
+
+  .icon {
+    flex: none;
+    margin-top: 3px;
+    color: var(--hd-muted);
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--hd-accent-ink);
+    text-decoration: none;
+  }
+}
+
+/* ---------- The topic tree ---------- */
+
+html:not(#hd) .HelpDeskTree-link {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--hd-muted);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--hd-soft);
+    color: var(--hd-ink);
+    text-decoration: none;
+  }
+
+  &.is-open {
+    color: var(--hd-ink);
+    font-weight: 600;
+  }
+
+  &[aria-current='page'],
+  &.is-current {
+    background: var(--hd-tint);
+    color: var(--hd-accent-ink);
+    font-weight: 600;
+  }
+}
+
+.HelpDeskTree-heading {
+  margin-left: 10px;
+}
+
+.HelpDeskTree-children {
+  margin-left: 12px !important;
+  padding-left: 6px !important;
+  border-left: 1px solid var(--hd-line);
+}
+
+.HelpDeskTree-ask {
+  margin-top: 18px;
+}

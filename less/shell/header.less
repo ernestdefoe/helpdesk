@@ -1,0 +1,80 @@
+// ============================================================================
+// The header: the bar colour in every mode, light text and controls.
+// Core's own header, restyled; nothing is moved.
+// ============================================================================
+
+.App-header {
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+[data-theme^='dark'] .App-header {
+  border-bottom: 1px solid var(--hd-line);
+}
+
+// 🚨 Explicit: core lets the forum's link colour reach the title.
+html:not(#hd) .Header-title a {
+  color: var(--hd-on-bar);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--hd-on-bar);
+    text-decoration: none;
+  }
+}
+
+html:not(#hd) .Header-controls > li > .Button,
+html:not(#hd) .Header-controls > li > .Dropdown > .Button,
+html:not(#hd) .Header-controls .Search-input {
+  color: var(--hd-on-bar-2);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--hd-on-bar);
+    background: fade(#ffffff, 10%);
+  }
+}
+
+// Core's search box in the bar: a translucent field, as in the mockup.
+html:not(#hd) .Header-secondary .Search-input.Button {
+  background: fade(#ffffff, 10%);
+  border-radius: var(--hd-radius-sm);
+  color: var(--hd-on-bar-2);
+
+  @media @desktop-up {
+    min-width: 280px;
+    justify-content: flex-start;
+  }
+}
+
+// The home page's hero has the big search: the bar's would say it twice.
+@media @tablet-up {
+  html:has(.HelpDeskHero) .Header-secondary .item-search {
+    display: none;
+  }
+}
+
+// Sign up as the one solid button on the bar. 🚨 !important only because
+// core's .Button--link sets its background transparent with !important.
+html:not(#hd) .Header-secondary .item-signUp .Button {
+  background: var(--hd-on-bar) !important;
+  color: var(--hd-bar);
+  border-radius: var(--hd-radius-sm);
+  font-weight: 600;
+  padding-left: 14px;
+  padding-right: 14px;
+
+  .Button-labelText {
+    color: var(--hd-bar);
+  }
+}
+
+// Core shows only the icon in the bar; a search-first theme says what it is.
+@media @desktop-up {
+  html:not(#hd) .Header-secondary .Search-input .Button-label {
+    display: inline;
+  }
+}

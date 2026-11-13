@@ -1,0 +1,161 @@
+// ============================================================================
+// A question page: topic tree | the question | "On this question".
+//
+// Three columns of core's own page container: the tree is an item Help Desk
+// adds to it (index.tsx), the right column is core's discussion sidebar
+// (its reply controls, then Help Desk's contents, solved box and guides).
+// Core reverses the row to put its sidebar on the right; Help Desk orders
+// the three instead. Below 1200px the tree folds away (the breadcrumb and
+// the topic pages still lead everywhere it did).
+// ============================================================================
+
+@hd-tree: 220px;
+@hd-side: 250px;
+@hd-gap: 48px;
+
+.HelpDeskPage-tree {
+  display: none;
+}
+
+@media @tablet-up {
+  .DiscussionPage {
+    --sidebar-width: @hd-side;
+    --gap: @hd-gap;
+
+    .Page-container {
+      flex-direction: row;
+    }
+
+    .Page-content {
+      order: 1;
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: none;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .Page-sidebar {
+      order: 2;
+      min-width: 0;
+    }
+  }
+}
+
+@media @tablet {
+  .DiscussionPage {
+    --sidebar-width: 200px;
+    --gap: 28px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .HelpDeskPage-tree {
+    display: block;
+    order: 0;
+    flex: 0 0 @hd-tree;
+    width: @hd-tree;
+    min-width: 0;
+    margin-top: 0;
+    align-self: flex-start;
+    position: sticky;
+    top: var(--header-height);
+    padding-top: 28px;
+  }
+}
+
+/* ---------- The title block, over the question's column ---------- */
+
+html:not(#hd) .DiscussionPage .DiscussionHero.Hero {
+  background: transparent;
+  color: var(--hd-ink);
+  text-align: left;
+  padding: 28px 0 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+@media @tablet-up {
+  .DiscussionPage .DiscussionHero .container {
+    padding-right: calc(15px + var(--sidebar-width) + var(--gap));
+  }
+}
+
+@media (min-width: 1200px) {
+  .DiscussionPage .DiscussionHero .container {
+    padding-left: calc(15px + @hd-tree + @hd-gap);
+  }
+}
+
+.DiscussionHero-items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .item-title {
+    order: 1;
+  }
+
+  .item-helpdeskFacts {
+    order: 2;
+    align-self: stretch;
+  }
+}
+
+html:not(#hd) .DiscussionHero-title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--hd-ink);
+  overflow-wrap: anywhere;
+}
+
+html:not(#hd) .HelpDeskCrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  font-size: 13px;
+  color: var(--hd-muted);
+
+  a {
+    color: var(--hd-muted);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--hd-accent-ink);
+    }
+  }
+}
+
+.HelpDeskFacts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hd-line);
+  font-size: 14px;
+  color: var(--hd-muted);
+
+  a {
+    color: var(--hd-ink);
+    font-weight: 600;
+  }
+}
+
+// The hero's badges (sticky, locked) sit before the title, small.
+.DiscussionHero-badges {
+  order: 0;
+  margin: 0;
+}

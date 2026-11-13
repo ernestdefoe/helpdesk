@@ -1,0 +1,125 @@
+// ============================================================================
+// Tokens
+//
+// The accent and the header colour come from the server (extend.php's
+// registerLessConfigVar). 🚨 Not given defaults here: LESS resolves a
+// variable to its LAST definition, so a default in this file would beat the
+// admin's value.
+//
+// Help Desk is a theme, so it hands its accent to core as the primary colour
+// and its own greys to core's palette: every core and extension component
+// (buttons, dropdowns, modals, the composer) then speaks the theme's colours
+// without a rule of its own. Under Wardrobe each theme compiles alone, so
+// this reaches only Help Desk's stylesheet.
+//
+// Mode-dependent colours live in core's [data-theme^=light|dark] blocks, never
+// behind prefers-color-scheme: Flarum 2 has a real per-member preference.
+// ============================================================================
+
+@primary-color:            @helpdesk-accent;
+@secondary-color:          @helpdesk-bar;
+
+@body-bg-light:            #ffffff;
+@text-color-light:         #14202B;
+@heading-color-light:      #14202B;
+@muted-color-light:        #5A6570;
+@muted-more-color-light:   #8A949D;
+@control-bg-light:         #EEF1F4;
+@control-color-light:      #33404B;
+@code-bg-light:            #EEF1F4;
+@code-color-light:         #14202B;
+
+@body-bg-dark:             #152129;
+@text-color-dark:          #E3EAEE;
+@heading-color-dark:       #E3EAEE;
+@muted-color-dark:         #93A3AD;
+@muted-more-color-dark:    #6D7E88;
+@control-bg-dark:          #1C2B34;
+@control-color-dark:       #C9D5DB;
+@code-bg-dark:             #1C2B34;
+@code-color-dark:          #D9E7EA;
+
+// The header is the bar colour in every mode.
+@header-bg-light:                   @helpdesk-bar;
+@header-color-light:                #ffffff;
+@header-control-bg-light:           fade(#ffffff, 10%);
+@header-control-color-light:        #ffffff;
+@header-bg-dark:                    darken(@helpdesk-bar, 6%);
+@header-color-dark:                 #ffffff;
+@header-control-bg-dark:            fade(#ffffff, 8%);
+@header-control-color-dark:         #E3EAEE;
+@header-bg-colored-light:           @helpdesk-bar;
+@header-color-colored-light:        #ffffff;
+@header-control-bg-colored-light:   fade(#ffffff, 10%);
+@header-control-color-colored-light: #ffffff;
+@header-bg-colored-dark:            darken(@helpdesk-bar, 6%);
+@header-color-colored-dark:         #ffffff;
+@header-control-bg-colored-dark:    fade(#ffffff, 8%);
+@header-control-color-colored-dark: #E3EAEE;
+
+@hd-hue: hue(@helpdesk-accent);
+
+:root {
+  --hd-bar:        @helpdesk-bar;
+  --hd-on-bar:     #ffffff;
+  --hd-on-bar-2:   #C9D6DB;
+  --hd-radius:     12px;
+  --hd-radius-sm:  8px;
+  --hd-mono:       ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+[data-theme^='light'] {
+  --hd-ground:     #F5F7F9;
+  --hd-card:       #ffffff;
+  --hd-ink:        #14202B;
+  --hd-muted:      #5A6570;
+  --hd-line:       #E1E6EA;
+  --hd-line-soft:  #E9EDF0;
+  --hd-soft:       #EEF1F4;
+  --hd-accent:     @helpdesk-accent;
+  --hd-accent-ink: hsl(@hd-hue, 77%, 19%);
+  --hd-tint:       hsl(@hd-hue, 35%, 92%);
+  --hd-ok:         #17663A;
+  --hd-ok-soft:    #E2F3E8;
+  --hd-warn:       #7A4D00;
+  --hd-warn-soft:  #FCEFD2;
+  --hd-code:       @helpdesk-bar;
+  --hd-code-ink:   #D9E7EA;
+}
+
+[data-theme='light-hc'] {
+  --hd-line:       #8A949D;
+  --hd-muted:      #39434C;
+}
+
+[data-theme^='dark'] {
+  --hd-ground:     #0E161B;
+  --hd-card:       #152129;
+  --hd-ink:        #E3EAEE;
+  --hd-muted:      #93A3AD;
+  --hd-line:       #24343E;
+  --hd-line-soft:  #1E2D36;
+  --hd-soft:       #1C2B34;
+  --hd-accent:     hsl(@hd-hue, 48%, 58%);
+  --hd-accent-ink: hsl(@hd-hue, 55%, 70%);
+  --hd-tint:       hsl(@hd-hue, 52%, 15%);
+  --hd-ok:         #7DDB9C;
+  --hd-ok-soft:    #143524;
+  --hd-warn:       #F2C36B;
+  --hd-warn-soft:  #3A2C10;
+  --hd-code:       #0A1014;
+  --hd-code-ink:   #D9E7EA;
+
+  // Links and the primary button need more light on a dark ground.
+  --link-color:    var(--hd-accent);
+  --primary-color: var(--hd-accent);
+  --button-primary-bg: hsl(@hd-hue, 72%, 30%);
+  --button-primary-bg-hover: hsl(@hd-hue, 72%, 34%);
+  --button-primary-bg-active: hsl(@hd-hue, 72%, 26%);
+  --button-primary-color: #ffffff;
+}
+
+[data-theme='dark-hc'] {
+  --hd-line:       #4A5D69;
+  --hd-muted:      #B5C2CA;
+}

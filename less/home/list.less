@@ -1,0 +1,231 @@
+// ============================================================================
+// The question list: one card, a row per question. The answer box at the
+// left is Answers' own count (or the reply count), the state pill is
+// Answers' (or Best Answer's); Help Desk only styles them.
+// ============================================================================
+
+.IndexPage-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  .HelpDeskList-heading {
+    margin-right: auto;
+  }
+
+  > ul {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    float: none;
+  }
+}
+
+.DiscussionList-discussions {
+  background: var(--hd-card);
+  border: 1px solid var(--hd-line);
+  border-radius: var(--hd-radius);
+  overflow: hidden;
+
+  > li + li {
+    border-top: 1px solid var(--hd-line-soft);
+  }
+}
+
+// The card is the edge now: rows don't bleed past it.
+.DiscussionList .DiscussionListItem {
+  margin: 0;
+  border-radius: 0;
+}
+
+.DiscussionListItem-content {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  grid-template-areas: 'stats main badges';
+  column-gap: 18px;
+  align-items: center;
+  padding: 14px 18px;
+}
+
+// Avatars give way to the answer box; sticky/locked badges stay, at the right.
+.DiscussionListItem-author {
+  display: contents;
+
+  .DiscussionListItem-author-avatar {
+    display: none;
+  }
+}
+
+.DiscussionListItem-badges {
+  grid-area: badges;
+  position: static;
+  margin: 0;
+}
+
+.DiscussionListItem-main {
+  grid-area: main;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+html:not(#hd) .DiscussionListItem-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--hd-ink);
+  overflow-wrap: anywhere;
+}
+
+.DiscussionListItem-content.read .DiscussionListItem-title {
+  font-weight: 500;
+}
+
+.DiscussionListItem-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--hd-muted);
+
+  > li {
+    margin: 0;
+    padding: 0;
+
+    // Core's dot separators: the gap does the spacing.
+    &::after,
+    &::before {
+      display: none !important;
+    }
+  }
+
+  // Core and fof/discussion-views place the tags and the view count on their
+  // own; here everything flows on one line, time at the end.
+  html:not(#hd) & > li.item-tags,
+  html:not(#hd) & > li.item-discussion-views {
+    position: static;
+    max-width: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    float: none;
+    margin: 0;
+    order: 0;
+  }
+
+  .item-helpdeskWhen {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .item-discussion-views {
+    order: 1;
+  }
+}
+
+// Tag labels as quiet chips; a tag's own colour stays on its icon.
+html:not(#hd) .DiscussionListItem-info .TagLabel {
+  background: var(--hd-soft);
+  color: var(--hd-control, var(--hd-ink));
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: none;
+
+  .TagLabel-text {
+    color: var(--hd-ink);
+  }
+}
+
+/* ---------- The answer box ---------- */
+
+.DiscussionListItem-stats {
+  grid-area: stats;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+html:not(#hd) .DiscussionListItem .Answers-stat.Answers-stat--votes {
+  display: none;
+}
+
+html:not(#hd) .DiscussionListItem .Answers-stat,
+.HelpDeskCount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  min-height: 50px;
+  padding: 6px 0;
+  border: 1px solid var(--hd-line);
+  border-radius: var(--hd-radius-sm);
+  background: var(--hd-card);
+  color: var(--hd-muted);
+  font-size: 12px;
+  line-height: 1.2;
+
+  b {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--hd-ink);
+  }
+
+  &.Answers-stat--solved,
+  &.HelpDeskCount--solved {
+    background: var(--hd-ok-soft);
+    border-color: transparent;
+    color: var(--hd-ok);
+
+    b {
+      color: var(--hd-ok);
+    }
+  }
+}
+
+/* ---------- State pills ---------- */
+
+html:not(#hd) .Answers-state,
+.HelpDeskPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  background: var(--hd-soft);
+  color: var(--hd-ink);
+  border: 0;
+
+  .icon {
+    font-size: 10px;
+    margin: 0;
+  }
+
+  &.Answers-state--solved,
+  &.HelpDeskPill--solved {
+    background: var(--hd-ok-soft);
+    color: var(--hd-ok);
+  }
+
+  &.Answers-state--unanswered,
+  &.HelpDeskPill--unanswered {
+    background: var(--hd-warn-soft);
+    color: var(--hd-warn);
+  }
+
+  &.Answers-state--bounty {
+    background: var(--hd-tint);
+    color: var(--hd-accent-ink);
+  }
+}

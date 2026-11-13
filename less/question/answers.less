@@ -1,0 +1,74 @@
+// ============================================================================
+// ernestdefoe/answers' thread, in Help Desk's colours. Answers draws all of
+// it (the order, the accepted answer on top, votes, comments); this only
+// restyles it.
+// ============================================================================
+
+html:not(#hd) .AnswersPost--accepted {
+  background: var(--hd-card);
+  border: 1px solid var(--hd-line);
+  border-top: 3px solid var(--hd-ok);
+  border-radius: var(--hd-radius);
+  padding: 16px 18px 6px;
+  margin: 6px 0 18px;
+}
+
+html:not(#hd) .Answers-acceptedFlag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--hd-ok-soft);
+  color: var(--hd-ok);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+html:not(#hd) .Answers-voteButton {
+  width: 36px;
+  height: 32px;
+  border-radius: var(--hd-radius-sm);
+  border: 1px solid var(--hd-line);
+  background: var(--hd-card);
+  color: var(--hd-muted);
+
+  &.is-on {
+    background: var(--hd-tint);
+    border-color: var(--hd-accent);
+    color: var(--hd-accent-ink);
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--hd-accent);
+    color: var(--hd-accent-ink);
+  }
+}
+
+html:not(#hd) .Answers-score {
+  color: var(--hd-ink);
+  font-weight: 600;
+}
+
+html:not(#hd) .Answers-accept.is-on {
+  color: var(--hd-ok);
+}
+
+html:not(#hd) .Answers-barTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--hd-ink);
+}
+
+html:not(#hd) .Answers-rep {
+  background: var(--hd-soft);
+  color: var(--hd-muted);
+}
+
+html:not(#hd) .Answers-answerBox {
+  border-radius: var(--hd-radius);
+  border-color: var(--hd-line);
+  background: var(--hd-card);
+  color: var(--hd-muted);
+}

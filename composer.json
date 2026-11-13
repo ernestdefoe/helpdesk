@@ -1,0 +1,92 @@
+{
+    "name": "ernestdefoe/helpdesk",
+    "description": "Help Desk — a search-first support theme for Flarum 2. A big search hero, topic cards that show how much of each topic is answered, question pages that read like documentation, and a dark mode.",
+    "type": "flarum-extension",
+    "keywords": [
+        "flarum",
+        "flarum-extension",
+        "theme",
+        "support",
+        "help desk",
+        "questions"
+    ],
+    "homepage": "https://github.com/ernestdefoe/helpdesk",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ernestdefoe",
+            "email": "ernestdefoe@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "flarum/core": "^2.0"
+    },
+    "suggest": {
+        "flarum/tags": "Topic cards, the topic tree and the breadcrumb on a question.",
+        "ernestdefoe/answers": "Answered, Open and Unanswered states, answer counts and the accepted answer near the top.",
+        "fof/best-answer": "Best answers count as answered when Answers is not installed.",
+        "ernestdefoe/knowledge-base": "Related articles beside each question, and the guide count in the search hero.",
+        "fof/discussion-views": "View counts on a question.",
+        "fof/forum-widgets-core": "Place Help Desk's topic cards anywhere fof/forum-widgets-core can."
+    },
+    "autoload": {
+        "psr-4": {
+            "ErnestDefoe\\HelpDesk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ErnestDefoe\\HelpDesk\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Help Desk",
+            "category": "theme",
+            "icon": {
+                "name": "fas fa-life-ring",
+                "backgroundColor": "#0F2A33",
+                "color": "#6FD3C9"
+            },
+            "optional-dependencies": [
+                "flarum/tags",
+                "ernestdefoe-answers",
+                "fof-best-answer",
+                "ernestdefoe-knowledge-base"
+            ]
+        }
+    },
+    "support": {
+        "issues": "https://github.com/ernestdefoe/helpdesk/issues",
+        "source": "https://github.com/ernestdefoe/helpdesk"
+    },
+    "require-dev": {
+        "flarum/phpstan": "^2.0",
+        "flarum/tags": "^2.0",
+        "flarum/testing": "^2.0",
+        "fof/best-answer": "^2.0",
+        "laravel/pint": "^1.32"
+    },
+    "scripts": {
+        "test": [
+            "@test:integration"
+        ],
+        "test:integration": "phpunit -c tests/phpunit.integration.xml",
+        "test:setup": "@php tests/integration/setup.php",
+        "analyse:phpstan": "phpstan analyse",
+        "style": "pint --test",
+        "style:fix": "pint"
+    },
+    "scripts-descriptions": {
+        "test": "Runs all tests.",
+        "test:integration": "Runs all integration tests.",
+        "test:setup": "Sets up a database for use with integration tests. Execute this only once.",
+        "analyse:phpstan": "Run static analysis"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "beta",
+    "prefer-stable": true
+}
