@@ -130,6 +130,8 @@ html:not(#hd) .DiscussionListItem-title {
 
 // Tag labels as quiet chips; a tag's own colour stays on its icon.
 html:not(#hd) .DiscussionListItem-info .TagLabel {
+  // flarum/tags paints a coloured label's text from --tag-color (!important).
+  --tag-color: var(--hd-ink);
   background: var(--hd-soft);
   color: var(--hd-control, var(--hd-ink));
   border-radius: 6px;
@@ -140,6 +142,14 @@ html:not(#hd) .DiscussionListItem-info .TagLabel {
 
   .TagLabel-text {
     color: var(--hd-ink);
+  }
+
+  .TagLabel-icon {
+    color: var(--hd-muted);
+  }
+
+  &.colored .TagLabel-icon {
+    color: var(--tag-bg);
   }
 }
 

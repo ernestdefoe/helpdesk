@@ -100,3 +100,36 @@ html:not(#hd) .HelpDeskTopics-all {
     display: inline-block;
   }
 }
+
+// Placed as a fof/forum-widgets-core widget in a narrow column: one card a
+// row, the icon and the name, no description.
+.HelpDeskFofWidget {
+  .HelpDeskTopics {
+    margin: 0;
+  }
+
+  .HelpDeskTopics-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  html:not(#hd) & .HelpDeskTopic {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .HelpDeskTopic-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .HelpDeskTopic-name {
+    font-size: 14px;
+    overflow-wrap: normal;
+  }
+
+  .HelpDeskTopic-text {
+    display: none;
+  }
+}
