@@ -239,3 +239,10 @@ html:not(#hd) .Answers-state,
     color: var(--hd-accent-ink);
   }
 }
+
+// Rows without a stats column (core's search preview, minimal lists): no
+// empty answer-box gutter.
+.DiscussionListItem-content:not(:has(.DiscussionListItem-stats)) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'main badges';
+}

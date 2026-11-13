@@ -112,6 +112,11 @@
     display: none;
   }
 
+  .DiscussionListItem-content:not(:has(.DiscussionListItem-stats)) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'main';
+  }
+
   html:not(#hd) .DiscussionListItem .Answers-stat,
   .HelpDeskCount {
     width: 48px;
