@@ -13,13 +13,13 @@ answer near the top, dark code blocks, an "On this question" contents list,
 ## What it does
 
 - **A search hero.** "How can we help?", how many answered questions and
-  guides there are to search, and one big box. Press Enter (or <kbd>/</kbd>
-  anywhere to jump to it) and Flarum's own search opens with your words in it,
-  so whatever search the forum runs is the one people use: core's,
+  guides there are to search, and one big box. Click it, or press <kbd>/</kbd>
+  anywhere, and Flarum's own search opens, so whatever search the forum runs
+  is the one people use: core's,
   [Typesense](https://github.com/ernestdefoe/typesense),
   [Manticore](https://github.com/ernestdefoe/manticore) or
   [OpenSearch](https://github.com/ernestdefoe/opensearch). Popular searches can
-  sit underneath as chips.
+  sit underneath as chips that open the search results.
 - **Browse by topic.** A card for each top-level primary tag: its icon, its
   description, how many questions it holds and what share of them are
   answered.
