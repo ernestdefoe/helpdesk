@@ -23,6 +23,7 @@ import registerWidgets from './widgets';
 import { slashToSearch } from './search';
 import { answerCount, data, fmt, has, isQuestion, stateOf, t, topics } from './util';
 
+export { default as extend } from './extend';
 export { default as HelpDeskHero } from './components/Hero';
 export { default as HelpDeskTopicCards } from './components/TopicCards';
 
@@ -37,9 +38,14 @@ const onHome = () => app.current.get('routeName') === 'index' && !app.search.sta
 app.initializers.add('ernestdefoe-helpdesk', () => {
   slashToSearch();
   registerWidgets();
+  home();
+  questionList();
+  questionHero();
+  questionPage();
+});
 
-  /* ---------- The home page ---------- */
-
+/** The home page: the search hero, the topic cards, "Ask a question". */
+function home() {
   override(IndexPage.prototype, 'hero', function (original: () => Mithril.Children) {
     return app.current.get('routeName') === 'index' ? <Hero /> : original();
   });
@@ -64,9 +70,10 @@ app.initializers.add('ernestdefoe-helpdesk', () => {
       if (button.attrs) button.attrs['aria-label'] = extractText(t('ask_button'));
     }
   });
+}
 
-  /* ---------- The question list ---------- */
-
+/** The question list: answer boxes, states, who asked and when. */
+function questionList() {
   // The answer box at the left of each row. On an Answers question it is
   // Answers' own count (styled); elsewhere the reply count, green once a
   // best answer is picked.
@@ -100,9 +107,10 @@ app.initializers.add('ernestdefoe-helpdesk', () => {
     const state = stateOf(this.attrs.discussion);
     if (state) attrs.className = classList(attrs.className, 'HelpDesk--' + state);
   });
+}
 
-  /* ---------- A question ---------- */
-
+/** A question's title block. */
+function questionHero() {
   // The breadcrumb takes the place of the tag labels; the facts sit under the title.
   extend(DiscussionHero.prototype, 'items', function (this: DiscussionHero, items: ItemList<Mithril.Children>) {
     const discussion = this.attrs.discussion as Discussion;
@@ -116,7 +124,10 @@ app.initializers.add('ernestdefoe-helpdesk', () => {
 
     items.add('helpdeskFacts', facts(discussion), -10);
   });
+}
 
+/** A question's page: the topic tree and the side column. */
+function questionPage() {
   // The topic tree, as a column of the page's own container.
   extend(PageStructure.prototype, 'containerItems', function (this: PageStructure, items: ItemList<Mithril.Children>) {
     const discussion = app.current.get('discussion') as Discussion | undefined;
@@ -127,7 +138,7 @@ app.initializers.add('ernestdefoe-helpdesk', () => {
 
     // On phones core's sidebar sits ABOVE the question, so the solved box and
     // the guides are drawn again after it (CSS shows one copy per width; both
-    // read the same cached request).
+    // read the discussion's own fields, so nothing is fetched twice).
     if (this.attrs.className === 'DiscussionPage' && discussion && !this.attrs.loading) {
       items.add(
         'helpdeskAfter',
@@ -148,7 +159,7 @@ app.initializers.add('ernestdefoe-helpdesk', () => {
     items.add('helpdeskSolved', <Solved discussion={discussion} />, 40);
     items.add('helpdeskGuides', <Guides discussion={discussion} />, 30);
   });
-});
+}
 
 /** Community / Topic / Sub-topic. */
 function crumbs(discussion: Discussion): Mithril.Children {
@@ -206,5 +217,5 @@ function stateLabel(discussion: Discussion, state: string): Mithril.Children {
     return app.translator.trans('ernestdefoe-answers.forum.state.' + names[discussion.attribute<number>('answersState') || 0]);
   }
 
-  return app.translator.trans('fof-best-answer.forum.best_answer_button');
+  return t('question.solved');
 }

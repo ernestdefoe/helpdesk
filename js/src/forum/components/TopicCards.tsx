@@ -17,7 +17,7 @@ export default class TopicCards extends Component<{ heading?: boolean }> {
     const all = topics();
     if (!all.length) return null;
 
-    const limit = app.forum.attribute<number>('helpdeskTopicCount') || 6;
+    const limit = app.forum.attribute<number>('helpdeskTopicCount');
     const shown = all.slice(0, limit);
 
     return (

@@ -22,16 +22,16 @@ const field =
 
 export default [
   new Admin()
-    // less/lib/tokens.less (@helpdesk-accent, @helpdesk-bar)
-    .setting(field('accent', 'color-preview', { placeholder: '#0E6E6E' }), 90)
-    .setting(field('bar', 'color-preview', { placeholder: '#0F2A33' }), 89)
-    // extend.php's font stamp and less/lib/fonts.less
-    .setting(field('fonts', 'boolean', { default: true }), 88)
+    // less/lib/tokens.less (@helpdesk-accent, @helpdesk-bar); empty keeps the theme's own colours
+    .setting(field('accent', 'color-preview'), 90)
+    .setting(field('bar', 'color-preview'), 89)
+    // src/Content/Page.php's font stamp and less/lib/fonts.less
+    .setting(field('fonts', 'boolean'), 88)
     // components/Hero.tsx
     .setting(field('hero_title', 'text'), 80)
     .setting(field('hero_text', 'text'), 79)
     .setting(field('popular', 'text'), 78)
     // index.tsx and components/TopicCards.tsx
-    .setting(field('topics', 'boolean', { default: true }), 70)
-    .setting(() => ({ setting: K('topic_count'), label: t('topic_count_label'), type: 'number', min: 2, max: 24, default: 6 }), 69),
+    .setting(field('topics', 'boolean'), 70)
+    .setting(() => ({ setting: K('topic_count'), label: t('topic_count_label'), type: 'number', min: 2, max: 24 }), 69),
 ];

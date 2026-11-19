@@ -41,7 +41,7 @@ html:not(#hd) .HelpDeskHero-title {
   max-width: 720px;
   height: 60px;
   margin: 0 auto;
-  padding: 0 14px 0 6px;
+  padding: 0 14px 0 8px;
   background: #ffffff;
   color: #5A6570;
   border-radius: var(--hd-radius);
@@ -51,6 +51,11 @@ html:not(#hd) .HelpDeskHero-title {
     outline: 3px solid fade(#ffffff, 45%);
     outline-offset: 2px;
   }
+
+  // The box's own outline replaces the button's.
+  .Search-input:focus-visible {
+    outline: none;
+  }
 }
 
 [data-theme^='dark'] .HelpDeskHero-search {
@@ -59,56 +64,64 @@ html:not(#hd) .HelpDeskHero-title {
   box-shadow: 0 0 0 1px var(--hd-line), 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
-.HelpDeskHero-go {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--hd-radius-sm);
-  background: none;
-  color: inherit;
-  font-size: 18px;
-  cursor: pointer;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--hd-accent);
-  }
-}
-
-input.HelpDeskHero-input {
+// Core's search box (HeroSearch), as one big field: the whole box opens
+// core's search.
+.HelpDeskHero-search .Search {
   flex: 1;
   min-width: 0;
   height: 100%;
-  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+html:not(#hd) .HelpDeskHero-search .Search-input.Button {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 0 8px 0 10px;
   border: 0;
-  outline: 0;
   background: none;
   box-shadow: none;
+  color: #5A6570;
   font-size: 17px;
-  color: #14202B;
-  -webkit-appearance: none;
-  appearance: none;
+  font-weight: 400;
+  text-align: left;
 
-  &::placeholder {
-    color: #5A6570;
-    opacity: 1;
+  .Button-icon {
+    margin: 0;
+    font-size: 18px;
   }
 
-  &::-webkit-search-cancel-button {
-    -webkit-appearance: none;
+  .Button-label,
+  .Button-labelText {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: none;
+    color: #14202B;
   }
 }
 
-[data-theme^='dark'] input.HelpDeskHero-input {
-  color: var(--hd-ink);
+html[data-theme^='dark']:not(#hd) .HelpDeskHero-search .Search-input.Button {
+  color: var(--hd-muted);
 
-  &::placeholder {
-    color: var(--hd-muted);
+  &:hover,
+  &:focus-visible {
+    color: var(--hd-ink);
   }
+}
+
+.HelpDeskHero-search .Search-clear {
+  color: inherit;
 }
 
 .HelpDeskHero-key {

@@ -9,7 +9,6 @@ ernestdefoe-helpdesk:
       guides: "{count, plural, one {# guide} other {# guides}}"
       both: "{first} and {second}"
       placeholder: Search questions and guides
-      label: Search questions and guides
       popular: "Popular:"
       shortcut: Press / to search
     topics:
@@ -26,6 +25,7 @@ ernestdefoe-helpdesk:
       heading: Topics
     question:
       community: Community
+      solved: Solved
       asked: "Asked {date} by {username}"
       answers: "{count, plural, one {# answer} other {# answers}}"
       replies: "{count, plural, one {# reply} other {# replies}}"
