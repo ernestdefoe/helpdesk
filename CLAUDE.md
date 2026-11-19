@@ -6,10 +6,12 @@
 
 ## Design rules that exist for a reason
 
-- **Help Desk never decides "answered".** ernestdefoe/answers (state column) or fof/best-answer (best post) does; `Topics::mode()` picks which. With neither, the answered UI is not drawn.
+- **Help Desk never decides "answered".** ernestdefoe/answers (state column) or fof/best-answer (best post) does; `Answered\*`, bound by `Extend\Conditional`, says which. With neither, the answered UI is not drawn.
 - **Topic numbers = one grouped query for the whole forum**, cached 10 minutes (`Topics::all`), then cut to the tags the visitor can see (one query) before they go in the page payload. Never per tag, never uncut.
-- Server work in `content()` runs only for visitors on Help Desk (`ActiveTheme`, Wardrobe-aware). Wardrobe serves each theme its own JS bundle, so the JS doesn't check.
-- The question page's side column is ONE request (`GET /api/helpdesk/discussions/{id}`), only when there is something to show (a solved question, or Knowledge Base installed). KB is optional: classes named as strings, results read through KB's own `visible` scope.
+- Server work in `Content\Page` runs only for visitors on Help Desk (`ActiveTheme`; `WardrobeActiveTheme` when Wardrobe is on). Wardrobe serves each theme its own JS bundle, so the JS doesn't check.
+- The question page's side column is fields of the discussion (`Api/DiscussionFields`: helpdeskYes, helpdeskHelpful written with PATCH /api/discussions/{id} like flarum/subscriptions, helpdeskGuides), visible only on the discussion's own Show/Update and only for Help Desk visitors. No custom controllers.
+- Every optional extension is wired with `Extend\Conditional` + `Extend\Bind` (Answered\*, Guides\*, TopicNumbers, WardrobeActiveTheme). No `isEnabled()`/`class_exists()` in PHP. KB classes stay strings (it is not a Composer dependency); results go through KB's own `visible` scope.
+- Build for Floxum 100: run `pre-floxum` before every release; list every integration in `optional-dependencies` AND `suggest`.
 - Keep Flarum's page structure: the topic tree is an item in core's `PageStructure` container, the side column is core's discussion sidebar. Search is core's modal (so any search driver applies).
 - LESS overrides core's colour variables (tokens.less) so every core/extension component follows the theme; mode-dependent colours live in `[data-theme^=light|dark]`, never `prefers-color-scheme`. Selectors that must beat theme/extension link rules carry `html:not(#hd)`.
 - extend.php uses string literals outside closures, never class constants.

@@ -14,68 +14,85 @@ use PHPUnit\Framework\Attributes\Test;
 
 class QuestionTest extends HelpDeskTestCase
 {
-    #[Test]
-    public function a_solved_question_asks_and_counts()
+    /** @return array{0: int, 1: mixed} */
+    private function answer(int $discussion, ?int $actor, ?bool $helpful): array
     {
-        [$status, $body] = $this->call('GET', '/api/helpdesk/discussions/1');
+        return $this->call('PATCH', "/api/discussions/$discussion", $actor, ['data' => ['type' => 'discussions', 'id' => (string) $discussion, 'attributes' => ['helpdeskHelpful' => $helpful]]]);
+    }
+
+    #[Test]
+    public function a_solved_question_shows_the_numbers_on_its_own_page()
+    {
+        [$status, $body] = $this->call('GET', '/api/discussions/1');
 
         $this->assertSame(200, $status);
-        $this->assertSame(['yes' => 0, 'mine' => null], $body['feedback']);
-        $this->assertSame([], $body['kb'], 'No knowledge base installed');
+        $this->assertSame(0, $body['data']['attributes']['helpdeskYes']);
+        $this->assertNull($body['data']['attributes']['helpdeskHelpful']);
+        $this->assertSame([], $body['data']['attributes']['helpdeskGuides'], 'No knowledge base installed');
+    }
+
+    #[Test]
+    public function lists_carry_none_of_it()
+    {
+        [$status, $body] = $this->call('GET', '/api/discussions');
+
+        $this->assertSame(200, $status);
+        foreach ($body['data'] as $discussion) {
+            $this->assertArrayNotHasKey('helpdeskYes', $discussion['attributes']);
+            $this->assertArrayNotHasKey('helpdeskGuides', $discussion['attributes']);
+        }
     }
 
     #[Test]
     public function an_unsolved_question_does_not_ask()
     {
-        [$status, $body] = $this->call('GET', '/api/helpdesk/discussions/2');
+        [, $body] = $this->call('GET', '/api/discussions/2');
+        $this->assertArrayNotHasKey('helpdeskYes', $body['data']['attributes']);
 
-        $this->assertSame(200, $status);
-        $this->assertNull($body['feedback']);
-
-        [$status] = $this->call('POST', '/api/helpdesk/discussions/2/feedback', 2, ['helpful' => true]);
+        [$status] = $this->answer(2, 2, true);
         $this->assertSame(403, $status);
+        $this->assertSame(0, $this->database()->table('helpdesk_feedback')->count());
     }
 
     #[Test]
-    public function a_question_the_visitor_cannot_see_is_not_found()
+    public function a_question_the_member_cannot_see_is_not_found()
     {
-        foreach ([3, 4, 5] as $id) {
-            [$status] = $this->call('GET', "/api/helpdesk/discussions/$id");
-            $this->assertSame(404, $status, "Discussion $id");
-        }
+        [$status] = $this->answer(3, 2, true);
 
-        [$status] = $this->call('POST', '/api/helpdesk/discussions/3/feedback', 2, ['helpful' => true]);
         $this->assertSame(404, $status, 'A member cannot answer on a restricted tag\'s question');
+        $this->assertSame(0, $this->database()->table('helpdesk_feedback')->count());
     }
 
     #[Test]
     public function a_guest_cannot_answer()
     {
-        [$status] = $this->call('POST', '/api/helpdesk/discussions/1/feedback', null, ['helpful' => true]);
+        [$status] = $this->answer(1, null, true);
 
-        // Core's CSRF check refuses a session-less guest (400) before the
-        // controller's own assertRegistered (401) would.
-        $this->assertContains($status, [400, 401]);
+        $this->assertContains($status, [400, 401, 403]);
         $this->assertSame(0, $this->database()->table('helpdesk_feedback')->count());
     }
 
     #[Test]
     public function a_member_answers_changes_and_takes_back()
     {
-        [$status, $body] = $this->call('POST', '/api/helpdesk/discussions/1/feedback', 2, ['helpful' => true]);
+        [$status, $body] = $this->answer(1, 2, true);
         $this->assertSame(200, $status);
-        $this->assertSame(['yes' => 1, 'mine' => true], $body['feedback']);
+        $this->assertSame(1, $body['data']['attributes']['helpdeskYes']);
+        $this->assertTrue($body['data']['attributes']['helpdeskHelpful']);
 
-        [, $body] = $this->call('POST', '/api/helpdesk/discussions/1/feedback', 3, ['helpful' => true]);
-        $this->assertSame(['yes' => 2, 'mine' => true], $body['feedback']);
+        [, $body] = $this->answer(1, 3, true);
+        $this->assertSame(2, $body['data']['attributes']['helpdeskYes']);
 
-        [, $body] = $this->call('POST', '/api/helpdesk/discussions/1/feedback', 2, ['helpful' => false]);
-        $this->assertSame(['yes' => 1, 'mine' => false], $body['feedback'], 'One row per member: a change replaces it');
+        [, $body] = $this->answer(1, 2, false);
+        $this->assertSame(1, $body['data']['attributes']['helpdeskYes'], 'One row per member: a change replaces it');
+        $this->assertFalse($body['data']['attributes']['helpdeskHelpful']);
 
-        [, $body] = $this->call('POST', '/api/helpdesk/discussions/1/feedback', 2, ['helpful' => null]);
-        $this->assertSame(['yes' => 1, 'mine' => null], $body['feedback']);
+        [, $body] = $this->answer(1, 2, null);
+        $this->assertSame(1, $body['data']['attributes']['helpdeskYes']);
+        $this->assertNull($body['data']['attributes']['helpdeskHelpful']);
 
-        [, $body] = $this->call('GET', '/api/helpdesk/discussions/1');
-        $this->assertSame(['yes' => 1, 'mine' => null], $body['feedback'], 'A guest sees the count, never a member\'s answer');
+        [, $body] = $this->call('GET', '/api/discussions/1');
+        $this->assertSame(1, $body['data']['attributes']['helpdeskYes']);
+        $this->assertNull($body['data']['attributes']['helpdeskHelpful'], 'A guest sees the count, never a member\'s answer');
     }
 }

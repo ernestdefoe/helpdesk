@@ -24,7 +24,7 @@ use Flarum\User\User;
  * Discussions (fof/best-answer decides "answered"):
  *   1 Printing, by 2, best answer picked (post 11)    → solved
  *   2 Printing, by 3, no best answer                  → open
- *   3 Staff,    by 1, best answer picked              → never shown to a guest
+ *   3 Staff + Printing, by 1, best answer picked      → in a restricted tag: counted nowhere
  *   4 Printing, by 2, hidden, best answer picked      → counted nowhere
  *   5 Printing, by 3, private                         → counted nowhere.
  */
@@ -68,7 +68,7 @@ abstract class HelpDeskTestCase extends TestCase
                 $d(5, 3, ['is_private' => true]),
             ],
             'discussion_tag' => [
-                ['discussion_id' => 1, 'tag_id' => 1], ['discussion_id' => 2, 'tag_id' => 1], ['discussion_id' => 3, 'tag_id' => 2],
+                ['discussion_id' => 1, 'tag_id' => 1], ['discussion_id' => 2, 'tag_id' => 1], ['discussion_id' => 3, 'tag_id' => 2], ['discussion_id' => 3, 'tag_id' => 1],
                 ['discussion_id' => 4, 'tag_id' => 1], ['discussion_id' => 5, 'tag_id' => 1],
             ],
             Post::class => [

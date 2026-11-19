@@ -28,7 +28,9 @@
         "fof/best-answer": "Best answers count as answered when Answers is not installed.",
         "ernestdefoe/knowledge-base": "Related articles beside each question, and the guide count in the search hero.",
         "fof/discussion-views": "View counts on a question.",
-        "fof/forum-widgets-core": "Place Help Desk's topic cards anywhere fof/forum-widgets-core can."
+        "fof/forum-widgets-core": "Place Help Desk's topic cards anywhere fof/forum-widgets-core can.",
+        "ernestdefoe/wardrobe": "Offer Help Desk as one of several themes members can pick from.",
+        "ernestdefoe/waymark": "When installed, Help Desk leaves the breadcrumb on a question to Waymark."
     },
     "autoload": {
         "psr-4": {
@@ -51,9 +53,13 @@
             },
             "optional-dependencies": [
                 "flarum/tags",
-                "ernestdefoe-answers",
-                "fof-best-answer",
-                "ernestdefoe-knowledge-base"
+                "ernestdefoe/answers",
+                "fof/best-answer",
+                "ernestdefoe/knowledge-base",
+                "fof/discussion-views",
+                "fof/forum-widgets-core",
+                "ernestdefoe/wardrobe",
+                "ernestdefoe/waymark"
             ]
         }
     },
@@ -62,6 +68,7 @@
         "source": "https://github.com/ernestdefoe/helpdesk"
     },
     "require-dev": {
+        "ernestdefoe/wardrobe": "^1.1",
         "flarum/phpstan": "^2.0",
         "flarum/tags": "^2.0",
         "flarum/testing": "^2.0",

@@ -9,62 +9,17 @@
 
 namespace ErnestDefoe\HelpDesk;
 
-use Flarum\Extension\ExtensionManager;
-use Flarum\Http\RequestUtil;
-use Illuminate\Contracts\Container\Container;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Is this visitor looking at Help Desk?
- *
- * Always yes, unless ernestdefoe/wardrobe is serving each visitor a theme of
- * their own. Then it is yes only for the visitors on Help Desk, and Help
- * Desk's per-page server work (its font preloads, the browser toolbar colour,
- * the topic numbers) stands down for everyone else, so a visitor on Bespoke
- * or Warren pays nothing for Help Desk being installed.
- *
- * 🚨 Soft: Wardrobe is never required and its classes are named as strings.
- * Asked once per request.
+ * Is this visitor looking at Help Desk? Without ernestdefoe/wardrobe, always:
+ * Help Desk is the forum's theme. With Wardrobe, WardrobeActiveTheme answers
+ * instead (bound in extend.php only when Wardrobe is enabled).
  */
-final class ActiveTheme
+class ActiveTheme
 {
-    public const ID = 'ernestdefoe-helpdesk';
-
-    private const REGISTRY = 'Ernestdefoe\\Wardrobe\\ThemeRegistry';
-
-    /**
-     * Shared by every instance: the container makes a fresh one per resolve.
-     *
-     * @var \WeakMap<ServerRequestInterface, bool>|null
-     */
-    private static ?\WeakMap $answers = null;
-
-    public function __construct(protected ExtensionManager $extensions, protected Container $container)
+    public function for(ServerRequestInterface $request): bool
     {
-    }
-
-    public function for(?ServerRequestInterface $request): bool
-    {
-        if (! $request || ! $this->extensions->isEnabled('ernestdefoe-wardrobe') || ! class_exists(self::REGISTRY)) {
-            return true;
-        }
-
-        self::$answers ??= new \WeakMap();
-
-        return self::$answers[$request] ??= $this->ask($request);
-    }
-
-    private function ask(ServerRequestInterface $request): bool
-    {
-        try {
-            $cookie = $request->getCookieParams()['wardrobe_theme'] ?? null;
-            $chosen = $this->container->make(self::REGISTRY)->resolve(RequestUtil::getActor($request), is_string($cookie) ? $cookie : null);
-        } catch (\Throwable) {
-            return true;
-        }
-
-        // null: Wardrobe is serving the shared stylesheet, which has every
-        // enabled theme in it, Help Desk included.
-        return $chosen === null || $chosen === self::ID;
+        return true;
     }
 }

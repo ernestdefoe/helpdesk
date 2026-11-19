@@ -9,62 +9,42 @@
 
 namespace ErnestDefoe\HelpDesk;
 
-use Flarum\Extension\ExtensionManager;
+use ErnestDefoe\HelpDesk\Answered\Answered;
 use Flarum\Tags\Tag;
 use Flarum\User\User;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * How many questions each topic (tag) has, and how many are answered.
  *
- * Who decides "answered" is never Help Desk: it reads the state another
- * extension keeps. ernestdefoe/answers keeps a state column on every
- * question (answered, solved or duplicate all count); fof/best-answer keeps a
- * best answer post. With neither, there is no such thing as answered, and the
- * theme shows plain discussion counts instead.
+ * "Answered" is read from whichever extension keeps it (see Answered\*,
+ * bound in extend.php). With neither, there is no such thing as answered, and
+ * the theme shows plain discussion counts instead.
  *
- * ONE grouped query for every tag, cached for ten minutes and shared by every
- * visitor; per visitor, only the tags they can see are handed out (one query
+ * ONE query for every tag (a count of its questions and of its answered
+ * ones), cached for ten minutes and shared by every visitor; per visitor, only the tags they can see are handed out (one query
  * for those ids), so a restricted tag's numbers never reach anyone who cannot
- * open it.
+ * open it. Bound only when flarum/tags is enabled (extend.php).
  */
-class Topics
+class Topics implements TopicNumbers
 {
     public const TTL = 600;
 
     public function __construct(
-        protected ConnectionInterface $db,
         protected Cache $cache,
-        protected ExtensionManager $extensions,
+        protected Answered $answered,
     ) {
     }
 
-    /** answers | best | none: whose idea of "answered" this forum uses. */
-    public function mode(): string
-    {
-        if ($this->extensions->isEnabled('ernestdefoe-answers')) {
-            return 'answers';
-        }
-
-        return $this->extensions->isEnabled('fof-best-answer') ? 'best' : 'none';
-    }
-
     /**
-     * Tag id => [questions, answered], for the tags this user can see. Empty
-     * when nothing keeps an answered state, or tags are off.
+     * Tag id => [questions, answered], for the tags this user can see.
      *
      * @return array<int, array{0: int, 1: int}>
      */
     public function for(User $actor): array
     {
-        $mode = $this->mode();
-
-        if ($mode === 'none' || ! $this->extensions->isEnabled('flarum-tags')) {
-            return [];
-        }
-
-        $all = $this->all($mode);
+        $all = $this->all();
 
         if (! $all) {
             return [];
@@ -80,41 +60,47 @@ class Topics
      *
      * @return array<int, array{0: int, 1: int}>
      */
-    public function all(string $mode): array
+    public function all(): array
     {
-        return $this->cache->remember('ernestdefoe-helpdesk.topics.'.$mode, self::TTL, fn () => $this->count($mode));
+        return $this->cache->remember('ernestdefoe-helpdesk.topics.'.$this->answered->mode(), self::TTL, fn () => $this->count());
     }
 
     /** @return array<int, array{0: int, 1: int}> */
-    protected function count(string $mode): array
+    protected function count(): array
     {
-        $grammar = $this->db->getQueryGrammar();
+        if (! $this->answered->counts()) {
+            return [];
+        }
 
-        // 🚨 Wrapped by the grammar, so the table prefix is added: raw SQL
-        // takes it verbatim and 500s on a prefixed forum.
-        $answered = $mode === 'answers'
-            ? $grammar->wrap('discussions.answers_state').' >= 1'
-            : $grammar->wrap('discussions.best_answer_post_id').' IS NOT NULL';
-
-        $query = $this->db->table('discussion_tag')
-            ->join('discussions', 'discussions.id', '=', 'discussion_tag.discussion_id')
+        // Only discussions anyone may see (the cache is shared by every
+        // visitor, so a restricted tag's own card shows its plain discussion
+        // count instead): never hidden or private ones
+        // (flarum/approval marks unapproved discussions private), and never
+        // one that is also in a restricted tag, whose numbers would otherwise
+        // show up on the public tag it shares.
+        $public = fn (Builder $query) => $query
             ->where('discussions.is_private', false)
             ->whereNull('discussions.hidden_at')
-            ->groupBy('discussion_tag.tag_id')
-            ->select('discussion_tag.tag_id')
-            ->selectRaw('COUNT(*) as total')
-            ->selectRaw("SUM(CASE WHEN $answered THEN 1 ELSE 0 END) as answered");
+            ->whereDoesntHave('tags', fn (Builder $tags) => $tags
+                ->where('tags.is_restricted', true)
+                ->orWhereHas('parent', fn (Builder $parent) => $parent->where('is_restricted', true)));
 
-        if ($mode === 'answers') {
-            $query->where('discussions.answers_question', true);
-        }
+        $tags = Tag::query()
+            ->withCount([
+                'discussions as questions' => function (Builder $query) use ($public) {
+                    $public($query);
+                    $this->answered->questions($query);
+                },
+                'discussions as answered' => function (Builder $query) use ($public) {
+                    $public($query);
+                    $this->answered->answered($query);
+                },
+            ])
+            ->get(['id']);
 
-        $out = [];
-
-        foreach ($query->get() as $row) {
-            $out[(int) $row->tag_id] = [(int) $row->total, (int) $row->answered];
-        }
-
-        return $out;
+        return $tags
+            ->filter(fn (Tag $tag) => $tag->getAttribute('questions') > 0)
+            ->mapWithKeys(fn (Tag $tag) => [(int) $tag->id => [(int) $tag->getAttribute('questions'), (int) $tag->getAttribute('answered')]])
+            ->all();
     }
 }
